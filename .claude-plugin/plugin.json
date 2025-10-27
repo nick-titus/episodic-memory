@@ -3,11 +3,11 @@
   "version": "1.0.5",
   "description": "Semantic search for Claude Code conversations. Remember past discussions, decisions, and patterns.",
   "author": {
-    "name": "Jesse Vincent",
-    "email": "jesse@fsck.com"
+    "name": "Nick Titus",
+    "email": "nick@theproductforge.com"
   },
-  "homepage": "https://github.com/obra/episodic-memory",
-  "repository": "https://github.com/obra/episodic-memory",
+  "homepage": "https://github.com/nick-titus/episodic-memory",
+  "repository": "https://github.com/nick-titus/episodic-memory",
   "license": "MIT",
   "keywords": ["memory", "search", "conversations", "semantic-search", "episodic"],
   "agents": ["./agents/search-conversations.md"],

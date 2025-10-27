@@ -24,8 +24,8 @@
     "embeddings"
   ],
   "author": {
-    "name": "Jesse Vincent",
-    "email": "jesse@fsck.com"
+    "name": "Nick Titus",
+    "email": "nick@theproductforge.com"
   },
   "license": "MIT",
   "type": "module",
@@ -49,7 +49,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/obra/episodic-memory"
+    "url": "https://github.com/nick-titus/episodic-memory"
   },
-  "homepage": "https://github.com/obra/episodic-memory"
+  "homepage": "https://github.com/nick-titus/episodic-memory"
 }

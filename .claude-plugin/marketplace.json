@@ -1,9 +1,9 @@
 {
-  "name": "episodic-memory-dev",
-  "description": "Development marketplace for episodic memory plugin",
+  "name": "nick-titus-plugins",
+  "description": "Nick Titus's Claude Code plugins",
   "owner": {
-    "name": "Jesse Vincent",
-    "email": "jesse@fsck.com"
+    "name": "Nick Titus",
+    "email": "nick@theproductforge.com"
   },
   "plugins": [
     {
@@ -12,8 +12,8 @@
       "version": "1.0.5",
       "source": "./",
       "author": {
-        "name": "Jesse Vincent",
-        "email": "jesse@fsck.com"
+        "name": "Nick Titus",
+        "email": "nick@theproductforge.com"
       }
     }
   ]
