@@ -63,10 +63,7 @@ export async function summarizeConversation(exchanges, sessionId) {
     }
     // For short conversations (≤15 exchanges), summarize directly
     if (exchanges.length <= 15) {
-        const conversationText = sessionId
-            ? '' // When resuming, no need to include conversation text - it's already in context
-            : formatConversationText(exchanges);
-        const prompt = `Please write a concise, factual summary of this conversation. Output ONLY the summary - no preamble. Claude will see this summary when searching previous conversations for useful memories and information.
+        const basePrompt = `Please write a concise, factual summary of this conversation. Output ONLY the summary - no preamble. Claude will see this summary when searching previous conversations for useful memories and information.
 
 Summarize what happened in 2-4 sentences. Be factual and specific. Output in <summary></summary> tags.
 
@@ -84,10 +81,22 @@ Good:
 <summary>Built JWT authentication for React app with refresh tokens and protected routes. Fixed token expiration bug by implementing refresh-during-request logic.</summary>
 
 Bad:
-<summary>I apologize. The conversation discussed authentication and various approaches were considered...</summary>
-
-${conversationText}`;
-        const result = await callClaude(prompt, sessionId);
+<summary>I apologize. The conversation discussed authentication and various approaches were considered...</summary>`;
+        // Try resuming the session first (works for recent sessions with full context)
+        // Fall back to including conversation text if resume fails (old/expired sessions)
+        if (sessionId) {
+            try {
+                const result = await callClaude(basePrompt, sessionId);
+                return extractSummary(result);
+            }
+            catch (error) {
+                // Resume failed (session expired/invalid) - fall through to text-based approach
+                console.log(`  Session resume failed, using text-based summarization`);
+            }
+        }
+        // Text-based summarization (no session context)
+        const conversationText = formatConversationText(exchanges);
+        const result = await callClaude(`${basePrompt}\n\n${conversationText}`);
         return extractSummary(result);
     }
     // For long conversations, use hierarchical summarization
