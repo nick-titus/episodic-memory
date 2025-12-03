@@ -2,6 +2,20 @@
 # Wrapper script for MCP server that ensures dependencies are installed
 # This runs before the MCP server starts
 
+# Pin to Node 22 to avoid native module version mismatches
+# The better-sqlite3 module was compiled with Node 22
+# Dynamically find the latest Node 22.x in nvm
+NODE22_DIR=$(ls -d "$HOME/.nvm/versions/node/v22."* 2>/dev/null | sort -V | tail -1)
+
+if [ -z "$NODE22_DIR" ] || [ ! -x "$NODE22_DIR/bin/node" ]; then
+  echo "ERROR: No Node 22.x found in ~/.nvm/versions/node/" >&2
+  echo "Please install it with: nvm install 22" >&2
+  exit 1
+fi
+
+NODE_BIN="$NODE22_DIR/bin/node"
+NPM_BIN="$NODE22_DIR/bin/npm"
+
 # Determine plugin root directory
 if [ -n "$CLAUDE_PLUGIN_ROOT" ]; then
   PLUGIN_ROOT="$CLAUDE_PLUGIN_ROOT"
@@ -21,7 +35,7 @@ if [ ! -d "$PLUGIN_ROOT/node_modules" ]; then
   rm -f "$PLUGIN_ROOT/package-lock.json"
 
   # Install dependencies - npm will auto-install optionalDependencies for current platform
-  (cd "$PLUGIN_ROOT" && npm install --no-audit --no-fund) >&2
+  (cd "$PLUGIN_ROOT" && "$NPM_BIN" install --no-audit --no-fund) >&2
 
   if [ $? -ne 0 ]; then
     echo "ERROR: Failed to install dependencies." >&2
@@ -32,5 +46,5 @@ if [ ! -d "$PLUGIN_ROOT/node_modules" ]; then
   echo "Dependencies installed successfully." >&2
 fi
 
-# Start the MCP server
-exec node "$PLUGIN_ROOT/dist/mcp-server.js"
+# Start the MCP server with pinned Node version
+exec "$NODE_BIN" "$PLUGIN_ROOT/dist/mcp-server.js"
