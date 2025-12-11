@@ -17,6 +17,5 @@
       "args": [],
       "env": {}
     }
-  },
-  "hooks": "./hooks/hooks.json"
+  }
 }
